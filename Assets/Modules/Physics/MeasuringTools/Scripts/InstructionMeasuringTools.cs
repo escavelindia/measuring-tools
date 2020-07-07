@@ -106,6 +106,7 @@ namespace MeasuringTools
             UIManager.instance.glass.GetComponentInChildren<MeshCollider>().enabled = false;
             UIManager.instance.glass.GetComponentInChildren<BoxCollider>().enabled = false;
             tabletCol.enabled = false;
+            VernierCaliper.instance.freezButton.GetComponent<Button>().interactable = false;
         }
 
         public void InstructionClick()
