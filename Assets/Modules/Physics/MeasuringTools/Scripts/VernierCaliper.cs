@@ -118,12 +118,12 @@ namespace MeasuringTools
             isFreezVC = !isFreezVC;
             if (isFreezVC)
             {
-                freezButton.GetComponentInChildren<Text>().text = "Unfreeze Vernier Caliper";
+                freezButton.GetComponentInChildren<Text>().text = "Freeze to Lock";
                 rb.isKinematic = true;
             }
             else
             {
-                freezButton.GetComponentInChildren<Text>().text = "Freeze       Vernier Caliper";
+                freezButton.GetComponentInChildren<Text>().text = "Unfreeze to Unlock";
                 rb.isKinematic = false;
             }
         }

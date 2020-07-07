@@ -246,7 +246,7 @@ namespace MeasuringTools
                     {
                         if (CentimeterScale.instance.isCMSelected)
                         {
-                            if (inputAnswer.text == "4.66")
+                            if (inputAnswer.text == "4.56")
                             {
                                 wrongAnswer.SetActive(false);
                                 rightAnswer.SetActive(true);
@@ -260,7 +260,7 @@ namespace MeasuringTools
                         }
                         if(MiliMeterSelection.instance.isMMSelected)
                         {
-                            if (inputAnswer.text == "46.6")
+                            if (inputAnswer.text == "45.6")
                             {
                                 wrongAnswer.SetActive(false);
                                 rightAnswer.SetActive(true);

@@ -544,11 +544,11 @@ namespace MeasuringTools
                     {
                         if (CentimeterScale.instance.isCMSelected)
                         {
-                            objectDimensionText.GetComponent<Text>().text = "4.66";
+                            objectDimensionText.GetComponent<Text>().text = "4.56";
                         }
                         if (MiliMeterSelection.instance.isMMSelected)
                         {
-                            objectDimensionText.GetComponent<Text>().text = "46.6";
+                            objectDimensionText.GetComponent<Text>().text = "45.6";
                         }
                     }
                 }
