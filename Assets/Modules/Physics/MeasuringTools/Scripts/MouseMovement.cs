@@ -64,8 +64,8 @@ namespace MeasuringTools
             negDistance = new Vector3(0f, 0f, -distance);
             if (Input.touchSupported)
             {
-                xAngle = 0.0f;
-                yAngle = 0.0f;
+                xAngle = x;
+                yAngle = y;
                 transform.rotation = Quaternion.Euler(yAngle, xAngle, 0.0f);
                 xSpeed = 60f;
                 ySpeed = 60f;
@@ -103,6 +103,7 @@ namespace MeasuringTools
                     InstructionMeasuringTools.instance.cameraZoomI.SetActive(false);
                     InstructionMeasuringTools.instance.cameraOrbitI.SetActive(true);
                 }
+
             }
             else if (target && Input.touchCount == 1/* && Input.GetTouch(0).position.x > Screen.width / 2*/ && Input.GetTouch(0).phase == TouchPhase.Moved)
             {
@@ -164,86 +165,90 @@ namespace MeasuringTools
         }
         void LateUpdate()
         {
-
-            if (Input.GetMouseButtonDown(0))
+            if (Input.touchSupported)
+                TouchZoom();
+            else
             {
-                clickedMousePosition = Input.mousePosition;
-                //UIManager.instance.showHideBContainer.SetActive(false);
-               
-            }
-
-            if (Input.GetMouseButton(0) && !MouseCursor.obstacle)
-            {
-                UIManager.instance.showHideBContainer.SetActive(false);
-                UIManager.instance.HideLabels();
-                //Debug.Log("inside mouse movement, why it is not moving?");
-                leavedMousePosition = Input.mousePosition;
-
-                // if distance is more than 0.1 then mouse is dragged.
-                if (Vector3.Distance(clickedMousePosition, leavedMousePosition) > 0.1f)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    // CameraSwitchBellJar.instance.objectLables.SetActive(false);
-                    x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-                    y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+                    clickedMousePosition = Input.mousePosition;
+                    //UIManager.instance.showHideBContainer.SetActive(false);
 
-                    y = ClampAngle(y, yMinLimit, yMaxLimit);
+                }
 
-                    Quaternion rotation = Quaternion.Euler(y, x, 0);
-
-                    Vector3 position = target.position + rotation * new Vector3(negDistance.x, 0.0f, negDistance.z);
-
-                    transform.rotation = rotation;
-                    transform.position = position;
-
-                    float angleLimit = Mathf.Lerp(-40f, 40, Mathf.InverseLerp(0f, 40f, (transform.localEulerAngles.y)));
-                    //Debug.Log(angleNeedle);
-
-                 }
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (InstructionMeasuringTools.instance.isInstructionClick && !InstructionMeasuringTools.instance.isScrolligInstruction)
+                if (Input.GetMouseButton(0) && !MouseCursor.obstacle)
                 {
+                    UIManager.instance.showHideBContainer.SetActive(false);
+                    UIManager.instance.HideLabels();
+                    //Debug.Log("inside mouse movement, why it is not moving?");
+                    leavedMousePosition = Input.mousePosition;
 
-                    Debug.Log("hh");
-                    InstructionMeasuringTools.instance.cameraOrbitI.SetActive(false);
-                    if (isScrolling == true)
+                    // if distance is more than 0.1 then mouse is dragged.
+                    if (Vector3.Distance(clickedMousePosition, leavedMousePosition) > 0.1f)
                     {
-                        isOrbit = true;
-                        isScrolling = false;
-                        InstructionMeasuringTools.instance.cameraOrbitI.SetActive(false);
-                        CameraSwitchVernierCaliper.instance.mainCam.GetComponent<MouseMovement>().enabled = false;
-                        UIManager.instance.showLabelB.GetComponent<Button>().interactable = true;
-                        InstructionMeasuringTools.instance.showLablesI.SetActive(true);
-                        CameraSwitchVernierCaliper.instance.FrontCameraView();
-                        Camera.main.fieldOfView = 70f;
+                        // CameraSwitchBellJar.instance.objectLables.SetActive(false);
+                        x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+                        y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+
+                        y = ClampAngle(y, yMinLimit, yMaxLimit);
+
+                        Quaternion rotation = Quaternion.Euler(y, x, 0);
+
+                        Vector3 position = target.position + rotation * new Vector3(negDistance.x, 0.0f, negDistance.z);
+
+                        transform.rotation = rotation;
+                        transform.position = position;
+
+                        float angleLimit = Mathf.Lerp(-40f, 40, Mathf.InverseLerp(0f, 40f, (transform.localEulerAngles.y)));
+                        //Debug.Log(angleNeedle);
+
                     }
                 }
-            }
+                if (Input.GetMouseButtonUp(0))
+                {
+                    if (InstructionMeasuringTools.instance.isInstructionClick && !InstructionMeasuringTools.instance.isScrolligInstruction)
+                    {
 
-            if (Input.GetAxis("Mouse ScrollWheel") < 0) // back
-            {
-                isScrolling = true;
-                float value = Camera.main.fieldOfView;
-                value++;
-                float v = Mathf.Clamp(value, minZoomV, maxZoomV);
-                //Debug.Log("value : " + v);
-                Camera.main.fieldOfView = v;
-            }
-            if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
-            {
-                isScrolling = true;
-                float value = Camera.main.fieldOfView;
-                value--;
-                float v = Mathf.Clamp(value, minZoomV, maxZoomV);
-                Camera.main.fieldOfView = v;
-            }
+                        Debug.Log("hh");
+                        InstructionMeasuringTools.instance.cameraOrbitI.SetActive(false);
+                        if (isScrolling == true)
+                        {
+                            isOrbit = true;
+                            isScrolling = false;
+                            InstructionMeasuringTools.instance.cameraOrbitI.SetActive(false);
+                            CameraSwitchVernierCaliper.instance.mainCam.GetComponent<MouseMovement>().enabled = false;
+                            UIManager.instance.showLabelB.GetComponent<Button>().interactable = true;
+                            InstructionMeasuringTools.instance.showLablesI.SetActive(true);
+                            CameraSwitchVernierCaliper.instance.FrontCameraView();
+                            Camera.main.fieldOfView = 70f;
+                        }
+                    }
+                }
 
-            if (InstructionMeasuringTools.instance.isInstructionClick && isScrolling)
-            {
-                
-                InstructionMeasuringTools.instance.cameraZoomI.SetActive(false);
-                InstructionMeasuringTools.instance.cameraOrbitI.SetActive(true);
+                if (Input.GetAxis("Mouse ScrollWheel") < 0) // back
+                {
+                    isScrolling = true;
+                    float value = Camera.main.fieldOfView;
+                    value++;
+                    float v = Mathf.Clamp(value, minZoomV, maxZoomV);
+                    //Debug.Log("value : " + v);
+                    Camera.main.fieldOfView = v;
+                }
+                if (Input.GetAxis("Mouse ScrollWheel") > 0) // forward
+                {
+                    isScrolling = true;
+                    float value = Camera.main.fieldOfView;
+                    value--;
+                    float v = Mathf.Clamp(value, minZoomV, maxZoomV);
+                    Camera.main.fieldOfView = v;
+                }
+
+                if (InstructionMeasuringTools.instance.isInstructionClick && isScrolling)
+                {
+
+                    InstructionMeasuringTools.instance.cameraZoomI.SetActive(false);
+                    InstructionMeasuringTools.instance.cameraOrbitI.SetActive(true);
+                }
             }
         }
 
