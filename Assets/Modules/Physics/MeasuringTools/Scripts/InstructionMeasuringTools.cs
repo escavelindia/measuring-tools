@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using UnityEngine.PostProcessing;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace MeasuringTools
 {
@@ -49,7 +49,9 @@ namespace MeasuringTools
         //public GameObject 
 
         public GameObject mainCamera;
-        public PostProcessingProfile instructionModeProfile;
+        public PostProcessProfile normalProfile;
+        public PostProcessProfile instructionModeProfile;
+        public PostProcessVolume postProcessVolume;
 
         public bool isInstructionClick;
         public bool isScrolligInstruction;
@@ -84,7 +86,7 @@ namespace MeasuringTools
             isInstructionClick = true;
             instructionButton.SetActive(false);
             exitInstructionMode.SetActive(true);
-            mainCamera.GetComponent<PostProcessingBehaviour>().profile = instructionModeProfile;
+            postProcessVolume.profile = instructionModeProfile;
             objectiveTransform.DOAnchorPos(new Vector2(0, -950f), 1f);
             instructionImage.SetActive(true);
             //disable buttons interactability
