@@ -69,6 +69,9 @@ namespace MeasuringTools
                 transform.rotation = Quaternion.Euler(yAngle, xAngle, 0.0f);
                 xSpeed = 60f;
                 ySpeed = 60f;
+                if (!PlayerPrefs.HasKey("seenMobileInputInfo"))
+                    PlayerPrefs.SetInt("seenMobileInputInfo", 0);
+
                 if (PlayerPrefs.GetInt("seenMobileInputInfo") == 0)
                 {
                     mobileControlMessage.SetActive(true);
